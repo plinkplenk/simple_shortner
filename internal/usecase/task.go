@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"github.com/plinkplenk/simple_shortner/domain"
+	"github.com/plinkplenk/simple_shortner/internal/domain"
 )
 
 type urlUsecase struct {

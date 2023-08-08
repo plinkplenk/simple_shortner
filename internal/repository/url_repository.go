@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"github.com/piaohao/godis"
-	"github.com/plinkplenk/simple_shortner/domain"
+	"github.com/plinkplenk/simple_shortner/internal/domain"
 )
 
 type urlRepository struct {
