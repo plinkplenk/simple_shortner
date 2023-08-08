@@ -11,7 +11,7 @@ type URL struct {
 
 type UrlRepository interface {
 	Create(c context.Context, url *URL) error
-	GetByID(id string) (URL, error)
+	GetByID(c context.Context, id string) (URL, error)
 }
 
 type UrlUsecase interface {

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/piaohao/godis"
 	"github.com/plinkplenk/simple_shortner/domain"
 )
@@ -17,12 +18,12 @@ func NewURLRepository(db *godis.Redis, collection string) domain.UrlRepository {
 	}
 }
 
-func (ur *urlRepository) Create(url *domain.URL) error {
+func (ur *urlRepository) Create(c context.Context, url *domain.URL) error {
 	_, err := ur.db.Set(url.ID, url.Original)
 	return err
 }
 
-func (ur *urlRepository) GetByID(id string) (domain.URL, error) {
+func (ur *urlRepository) GetByID(c context.Context, id string) (domain.URL, error) {
 	url := domain.URL{}
 	original, err := ur.db.Get(id)
 	if err != nil {
