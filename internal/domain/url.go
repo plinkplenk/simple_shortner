@@ -1,20 +1,27 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"github.com/gofrs/uuid"
+)
 
-const CollectionUrl = "urls"
+const CollectionURL = "urls"
 
 type URL struct {
-	ID       string
-	Original string
+	ID       string     `db:"id"`
+	Original string     `db:"original"`
+	Expire   int        `db:"expire"`
+	UserID   *uuid.UUID `db:"user_id"`
 }
 
-type UrlRepository interface {
-	Create(c context.Context, url *URL) error
-	GetByID(c context.Context, id string) (URL, error)
+type URLRepository interface {
+	Create(ctx context.Context, url *URL) (*URL, error)
+	GetByID(ctx context.Context, id string) (*URL, error)
+	GetAllByUserID(ctx context.Context, userID uuid.UUID) ([]*URL, error)
 }
 
-type UrlUsecase interface {
-	Create(c context.Context, url *URL) error
-	GetByID(c context.Context, id string) (URL, error)
+type URLUsecase interface {
+	Create(ctx context.Context, url *URL) (*URL, error)
+	GetByID(ctx context.Context, id string) (*URL, error)
+	GetAllByUserID(ctx context.Context, userID uuid.UUID) ([]*URL, error)
 }
