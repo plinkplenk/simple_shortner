@@ -6,12 +6,12 @@ import (
 
 type URLCreateDto struct {
 	Original string `json:"original"`
-	Expire   *int   `json:"expire"`
+	Expire   *int64 `json:"expire"`
 }
 
 type URLResponseDto struct {
 	ID       string     `json:"id"`
 	Original string     `json:"original"`
-	Expire   int        `json:"expire"`
+	Expire   int64      `json:"expire"`
 	UserID   *uuid.UUID `json:"user_id"`
 }

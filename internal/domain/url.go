@@ -10,7 +10,7 @@ const CollectionURL = "urls"
 type URL struct {
 	ID       string     `db:"id"`
 	Original string     `db:"original"`
-	Expire   int        `db:"expire"`
+	Expire   int64      `db:"expire"`
 	UserID   *uuid.UUID `db:"user_id"`
 }
 

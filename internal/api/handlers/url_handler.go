@@ -15,15 +15,20 @@ type UrlHandler struct {
 	Validator  *utils.UrlValidator
 }
 
-type m = fiber.Map
+type map_ = fiber.Map
+
+const (
+	idLen              = 6
+	defaultURLLifetime = 24 * time.Hour
+)
 
 func (uh *UrlHandler) Create(c *fiber.Ctx) error {
-	expireIN := time.Now().Second() + 60*60*24*1000
+	expireIN := time.Now().Add(defaultURLLifetime).Unix()
 	var input dtos.URLCreateDto
-	urlID := utils.GenerateID()
+	urlID := utils.GenerateID(idLen)
 	existingUrl, _ := uh.UrlUsecase.GetByID(c.Context(), urlID)
 	for existingUrl != nil {
-		urlID = utils.GenerateID()
+		urlID = utils.GenerateID(idLen)
 		existingUrl, _ = uh.UrlUsecase.GetByID(c.Context(), urlID)
 	}
 	err := c.BodyParser(&input)
@@ -52,11 +57,15 @@ func (uh *UrlHandler) Create(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return c.Status(http.StatusCreated).JSON(m{"url": dtos.URLResponseDto{
-		ID:       newURL.ID,
-		Original: newURL.Original,
-		UserID:   newURL.UserID,
-	}})
+	return c.Status(http.StatusCreated).JSON(
+		map_{
+			"url": dtos.URLResponseDto{
+				ID:       newURL.ID,
+				Original: newURL.Original,
+				UserID:   newURL.UserID,
+			},
+		},
+	)
 }
 
 func (uh *UrlHandler) GetByID(c *fiber.Ctx) error {
@@ -69,12 +78,16 @@ func (uh *UrlHandler) GetByID(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(m{"url": dtos.URLResponseDto{
-		ID:       url.ID,
-		Original: url.Original,
-		UserID:   url.UserID,
-		Expire:   url.Expire,
-	}})
+	return c.JSON(
+		map_{
+			"url": dtos.URLResponseDto{
+				ID:       url.ID,
+				Original: url.Original,
+				UserID:   url.UserID,
+				Expire:   url.Expire,
+			},
+		},
+	)
 }
 
 func (uh *UrlHandler) GetAllByUserID(c *fiber.Ctx) error {
@@ -96,5 +109,5 @@ func (uh *UrlHandler) GetAllByUserID(c *fiber.Ctx) error {
 			Expire:   url.Expire,
 		}
 	}
-	return c.JSON(m{"urls": urlResponse})
+	return c.JSON(map_{"urls": urlResponse})
 }
